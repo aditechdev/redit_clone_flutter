@@ -27,3 +27,8 @@ To change icon
 ```
 flutter pub run flutter_launcher_icons
 ```
+
+Generate SSH
+```
+keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+```

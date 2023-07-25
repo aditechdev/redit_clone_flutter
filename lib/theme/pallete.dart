@@ -23,6 +23,7 @@ class Pallete {
       backgroundColor: drawerColor,
     ),
     primaryColor: redColor,
+    // useMaterial3: true,
     navigationDrawerTheme:
         const NavigationDrawerThemeData(backgroundColor: drawerColor),
     // backgroundColor:

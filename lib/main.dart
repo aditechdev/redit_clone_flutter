@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:redit_clone_flutter/features/auth/screens/login_screen.dart';
 import 'package:redit_clone_flutter/theme/pallete.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+
   runApp(const MyApp());
 }
 
