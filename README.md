@@ -16,12 +16,14 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 
+
+
+To add Lints
+```
+flutter pub add --dev flutter_lints
 ```
 
-To Add Lints
-flutter pub add --dev flutter_lints
-
 To change icon
+```
 flutter pub run flutter_launcher_icons
-
 ```
