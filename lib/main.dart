@@ -2,6 +2,7 @@ import 'package:color_log/color_log.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:redit_clone_flutter/features/auth/screens/login_screen.dart';
 import 'package:redit_clone_flutter/theme/pallete.dart';
 
@@ -15,7 +16,7 @@ void main() async {
     clog.error(e.toString());
   }
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
