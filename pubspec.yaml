@@ -47,6 +47,8 @@ dependencies:
   google_sign_in: ^6.1.4
   # Used for state management
   flutter_riverpod: ^2.3.6
+  firebase_crashlytics: ^3.3.4
+  color_log: ^0.0.6
 
 dev_dependencies:
   flutter_test:
