@@ -54,11 +54,14 @@ class _MyAppState extends ConsumerState<MyApp> {
               theme: Pallete.darkModeAppTheme,
               routerDelegate: RoutemasterDelegate(routesBuilder: (context) {
                 if (data != null) {
-                  getUserData(ref, data);
+                  if (userModel == null) {
+                    getUserData(ref, data);
+                  }
+                  clog.debug(userModel.toString());
                   if (userModel != null) {
                     return loggedInRoutes;
                   }
-                } 
+                }
                 return loggedOutRoutes;
               }),
               routeInformationParser: const RoutemasterParser(),
