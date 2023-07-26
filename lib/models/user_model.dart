@@ -10,13 +10,13 @@ class UserModel {
   final List<String>? awards;
 
   UserModel({
-    this.name,
-    this.profilePic,
-    this.banner,
-    this.uid,
-    this.isAuthenticated,
-    this.karma,
-    this.awards,
+   required this.name,
+   required this.profilePic ,
+   required  this.banner ,
+   required  this.uid ,
+   required  this.isAuthenticated,
+   required  this.karma,
+   required  this.awards,
   });
 
   UserModel copyWith({
