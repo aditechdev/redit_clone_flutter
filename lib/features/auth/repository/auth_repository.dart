@@ -76,6 +76,8 @@ class AuthRepository {
           event.data() as Map<String, dynamic>,
         ),
       );
+
+  Stream<User?> get getAuthStateChange => _firebaseAuth.authStateChanges();
 }
 
 final authRepositoryProvider = Provider<AuthRepository>(
@@ -85,5 +87,3 @@ final authRepositoryProvider = Provider<AuthRepository>(
     googleSignIn: ref.read(googleSignInProvider),
   ),
 );
-
-
