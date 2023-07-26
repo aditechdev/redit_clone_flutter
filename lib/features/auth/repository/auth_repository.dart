@@ -71,6 +71,12 @@ class AuthRepository {
     }
   }
 
+  Future<void> logout() async {
+    _googleSignIn.signOut();
+
+    _firebaseAuth.signOut();
+  }
+
   Stream<UserModel> getUserData(String uid) => _users.doc(uid).snapshots().map(
         (event) => UserModel.fromMap(
           event.data() as Map<String, dynamic>,

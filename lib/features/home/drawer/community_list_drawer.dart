@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 class CommunityList extends ConsumerWidget {
   const CommunityList({super.key});
+
+  void navigateToCreateCommunity(BuildContext context) {
+    Routemaster.of(context).push('/create-community');
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -13,7 +18,7 @@ class CommunityList extends ConsumerWidget {
           ListTile(
             title: const Text("Community"),
             leading: const Icon(Icons.add),
-            onTap: () {},
+            onTap: () => navigateToCreateCommunity(context),
           ),
         ],
       )),

@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dart';
+import 'package:redit_clone_flutter/features/auth/repository/auth_repository.dart';
 import 'package:redit_clone_flutter/features/home/drawer/community_list_drawer.dart';
+import 'package:routemaster/routemaster.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -32,7 +35,11 @@ class HomeScreen extends ConsumerWidget {
               icon: const Icon(Icons.search)),
           IconButton(
               splashRadius: 25,
-              onPressed: () {},
+              onPressed: () {
+                // FirebaseAuth.instance
+                ref.read(authRepositoryProvider).logout();
+                Routemaster.of(context).pop();
+              },
               icon: CircleAvatar(
                 backgroundImage: NetworkImage(user!.profilePic!),
               ))
