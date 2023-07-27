@@ -51,7 +51,7 @@ class _MyAppState extends ConsumerState<MyApp> {
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
               title: 'Redit Clone',
-              theme: Pallete.darkModeAppTheme,
+              theme: ref.watch(themeModeProvider),
               routerDelegate: RoutemasterDelegate(routesBuilder: (context) {
                 if (data != null) {
                   if (userModel == null) {

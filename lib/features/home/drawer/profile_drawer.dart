@@ -5,9 +5,14 @@ import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dar
 import 'package:redit_clone_flutter/theme/pallete.dart';
 import 'package:routemaster/routemaster.dart';
 
-class ProfileDrawer extends ConsumerWidget {
+class ProfileDrawer extends ConsumerStatefulWidget {
   const ProfileDrawer({super.key});
 
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileDrawerState();
+}
+
+class _ProfileDrawerState extends ConsumerState<ProfileDrawer> {
   void logOut(WidgetRef ref) {
     ref.read(authControllerProvider.notifier).logout();
   }
@@ -16,10 +21,14 @@ class ProfileDrawer extends ConsumerWidget {
     Routemaster.of(context).push("/u/$uid");
   }
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var user = ref.watch(userProvider);
+  void toggleTheme(WidgetRef ref) {
+    ref.read(themeModeProvider.notifier).toggleTheme();
+    setState(() {});
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    var user = ref.watch(userProvider);
     return Drawer(
       child: SafeArea(
           child: Column(
@@ -58,10 +67,9 @@ class ProfileDrawer extends ConsumerWidget {
           ),
 
           CupertinoSwitch(
-              value: true,
-              onChanged: (v) {
-                v = !v;
-              })
+              value:
+                  ref.watch(themeModeProvider.notifier).mode == ThemeMode.dark,
+              onChanged: (v) => toggleTheme(ref))
         ],
       )),
     );
