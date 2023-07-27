@@ -3,10 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dart';
 import 'package:redit_clone_flutter/widget/error_text.dart';
 import 'package:redit_clone_flutter/widget/loader.dart';
+import 'package:routemaster/routemaster.dart';
 
 class UserProfileScreen extends ConsumerWidget {
   final String uid;
   const UserProfileScreen({super.key, required this.uid});
+
+  void navigateToUserEditProfile(BuildContext context) {
+    Routemaster.of(context).push("/edit-profile/$uid");
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,20 +35,19 @@ class UserProfileScreen extends ConsumerWidget {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                               Container(
-                                 alignment: Alignment.bottomLeft,
-                                padding:
-                                    EdgeInsets.all(20).copyWith(bottom: 70),
-                                 child: CircleAvatar(
-                                   radius: 45,
-                                   backgroundImage:
-                                       NetworkImage(user.profilePic ?? ""),
-                                 ),
-                               ),
                               Container(
                                 alignment: Alignment.bottomLeft,
-                                
-                                padding: EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(20)
+                                    .copyWith(bottom: 70),
+                                child: CircleAvatar(
+                                  radius: 45,
+                                  backgroundImage:
+                                      NetworkImage(user.profilePic ?? ""),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.bottomLeft,
+                                padding: const EdgeInsets.all(20),
                                 child: OutlinedButton(
                                     style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
@@ -51,7 +55,8 @@ class UserProfileScreen extends ConsumerWidget {
                                                 BorderRadius.circular(20)),
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 25)),
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        navigateToUserEditProfile(context),
                                     child: const Text("Edit Profile")),
                               )
                             ],
@@ -62,8 +67,6 @@ class UserProfileScreen extends ConsumerWidget {
                           sliver: SliverList(
                             delegate: SliverChildListDelegate(
                               [
-                               
-                                
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

@@ -6,6 +6,7 @@ import 'package:redit_clone_flutter/features/community/screens/create_community_
 import 'package:redit_clone_flutter/features/community/screens/edit_community_screen.dart';
 import 'package:redit_clone_flutter/features/community/screens/mod_tools_screen.dart';
 import 'package:redit_clone_flutter/features/home/screens/home_screens.dart';
+import 'package:redit_clone_flutter/features/userProfile/screens/edit_user_profile_screen.dart';
 import 'package:redit_clone_flutter/features/userProfile/screens/user_profile_screen.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -42,6 +43,11 @@ final loggedInRoutes = RouteMap(
         ),
     '/u/:uid': (router) => MaterialPage(
           child: UserProfileScreen(
+            uid: router.pathParameters["uid"]!,
+          ),
+        ),
+    '/edit-profile/:uid': (router) => MaterialPage(
+          child: EditUserProfile(
             uid: router.pathParameters["uid"]!,
           ),
         ),
