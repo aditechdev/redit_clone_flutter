@@ -46,6 +46,10 @@ class CommunityController extends StateNotifier<bool> {
 
     return _communityRepository.getCommunities(uid);
   }
+
+  Stream<CommunityModel> getCommunityByName(String name) {
+   return _communityRepository.getCommunityByName(name);
+  }
 }
 
 final communityControlerProvider =
@@ -57,5 +61,12 @@ final communityControlerProvider =
 final userCommunityProvider = StreamProvider((ref) {
   var communityController = ref.watch(communityControlerProvider.notifier);
 
-  return communityController.getUserCommunity() ;
+  return communityController.getUserCommunity();
+});
+
+
+final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
+  var communityController = ref.watch(communityControlerProvider.notifier);
+
+  return communityController.getCommunityByName(name);
 });
