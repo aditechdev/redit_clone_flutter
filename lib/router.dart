@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:redit_clone_flutter/features/auth/screens/login_screen.dart';
+import 'package:redit_clone_flutter/features/community/screens/add_mods_screen.dart';
 import 'package:redit_clone_flutter/features/community/screens/community_screen.dart';
 import 'package:redit_clone_flutter/features/community/screens/create_community_screen.dart';
 import 'package:redit_clone_flutter/features/community/screens/edit_community_screen.dart';
@@ -30,6 +31,11 @@ final loggedInRoutes = RouteMap(
         ),
     '/edit-community/:name': (router) => MaterialPage(
           child: EditCommunityScreen(
+            name: router.pathParameters["name"],
+          ),
+        ),
+    '/add-mods/:name': (router) => MaterialPage(
+          child: AddModsScreen(
             name: router.pathParameters["name"],
           ),
         ),

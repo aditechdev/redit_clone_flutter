@@ -54,7 +54,7 @@ class CommunityRepository {
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {
-     return left(Failures(e.toString()));
+      return left(Failures(e.toString()));
     }
   }
 
@@ -105,6 +105,20 @@ class CommunityRepository {
     try {
       return right(
           _communities.doc(communityModel.name).update(communityModel.toMap()));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failures(e.toString()));
+    }
+  }
+
+  FutureVoid addMods(String communityName, List<String> uids) async {
+    try {
+      return right(
+       await _communities.doc(communityName).update(
+          {"mods": uids},
+        ),
+      );
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {

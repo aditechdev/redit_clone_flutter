@@ -123,9 +123,18 @@ class CommunityController extends StateNotifier<bool> {
           showSnackBar(context, "Community left successfully");
         } else {
           showSnackBar(context, "Community joined successfully");
-
         }
       },
+    );
+  }
+
+  void addMods(
+      String communityName, List<String> uids, BuildContext context) async {
+    final res = await _communityRepository.addMods(communityName, uids);
+
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) => Routemaster.of(context).pop(),
     );
   }
 }
