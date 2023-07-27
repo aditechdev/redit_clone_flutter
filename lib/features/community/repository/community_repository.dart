@@ -47,8 +47,19 @@ class CommunityRepository {
   }
 
   Stream<CommunityModel> getCommunityByName(String name) {
-   return  _communities.doc(name).snapshots().map((event) =>
+    return _communities.doc(name).snapshots().map((event) =>
         CommunityModel.fromMap(event.data() as Map<String, dynamic>));
+  }
+
+  FutureVoid editCommunity(CommunityModel communityModel) async {
+    try {
+      return right(
+          _communities.doc(communityModel.name).update(communityModel.toMap()));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failures(e.toString()));
+    }
   }
 
   CollectionReference get _communities =>

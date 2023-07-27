@@ -51,6 +51,8 @@ dependencies:
   color_log: ^0.0.6
   fpdart: ^0.6.0
   routemaster: ^1.0.1
+  dotted_border: ^2.0.0+3
+  file_picker: ^5.3.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

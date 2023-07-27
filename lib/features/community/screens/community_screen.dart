@@ -3,10 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dart';
 import 'package:redit_clone_flutter/features/community/controller/community_controller.dart';
 import 'package:redit_clone_flutter/widget/loader.dart';
+import 'package:routemaster/routemaster.dart';
 
 class CommunityScreen extends ConsumerWidget {
   final String? name;
   const CommunityScreen({super.key, this.name});
+
+  void navigateToModToolsScreen(BuildContext context) {
+    Routemaster.of(context).push('/mod-tools/$name');
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -66,7 +71,8 @@ class CommunityScreen extends ConsumerWidget {
                                                     BorderRadius.circular(20)),
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 25)),
-                                        onPressed: () {},
+                                        onPressed: () =>
+                                            navigateToModToolsScreen(context),
                                         child: const Text("Mod Tools"))
                                     : OutlinedButton(
                                         style: ElevatedButton.styleFrom(
