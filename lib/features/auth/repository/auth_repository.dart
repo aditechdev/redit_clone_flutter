@@ -73,8 +73,11 @@ class AuthRepository {
 
   Future<void> logout() async {
     _googleSignIn.signOut();
+    // _firebaseFirestore.terminate();
 
-   await _firebaseAuth.signOut();
+    // _firebaseFirestore.clearPersistence();
+
+    await _firebaseAuth.signOut();
   }
 
   Stream<UserModel> getUserData(String uid) => _users.doc(uid).snapshots().map(

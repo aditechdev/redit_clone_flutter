@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:redit_clone_flutter/core/failures.dart';
 import 'package:redit_clone_flutter/core/providers/storage_repository_providers.dart';
 import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dart';
 import 'package:redit_clone_flutter/features/community/repository/community_repository.dart';
@@ -100,6 +101,32 @@ class CommunityController extends StateNotifier<bool> {
 
   Stream<List<CommunityModel>> searchCommunity(String query) {
     return _communityRepository.searchCommunity(query);
+  }
+
+  void joinCommmunity(CommunityModel community, BuildContext context) async {
+    final user = _ref.read(userProvider);
+
+    Either<Failures, void> res;
+
+    if (community.members.contains(user?.uid ?? "")) {
+      res =
+          await _communityRepository.leaveCommunity(community.name, user!.uid!);
+    } else {
+      res =
+          await _communityRepository.joinCommunity(community.name, user!.uid!);
+    }
+
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) {
+        if (community.members.contains(user.uid ?? "")) {
+          showSnackBar(context, "Community left successfully");
+        } else {
+          showSnackBar(context, "Community joined successfully");
+
+        }
+      },
+    );
   }
 }
 
