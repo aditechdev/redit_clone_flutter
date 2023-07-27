@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:redit_clone_flutter/core/providers/storage_repository_providers.dart';
@@ -96,6 +97,10 @@ class CommunityController extends StateNotifier<bool> {
       },
     );
   }
+
+  Stream<List<CommunityModel>> searchCommunity(String query) {
+    return _communityRepository.searchCommunity(query);
+  }
 }
 
 final communityControlerProvider =
@@ -117,4 +122,10 @@ final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
   var communityController = ref.watch(communityControlerProvider.notifier);
 
   return communityController.getCommunityByName(name);
+});
+
+final searchCommunityProvider = StreamProvider.family((ref, String name) {
+  var communityController = ref.watch(communityControlerProvider.notifier);
+
+  return communityController.searchCommunity(name);
 });

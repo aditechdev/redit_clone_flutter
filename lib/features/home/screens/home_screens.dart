@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dart';
-import 'package:redit_clone_flutter/features/auth/repository/auth_repository.dart';
+import 'package:redit_clone_flutter/features/home/delegates/search_community_deligate.dart';
 import 'package:redit_clone_flutter/features/home/drawer/community_list_drawer.dart';
-import 'package:routemaster/routemaster.dart';
+import 'package:redit_clone_flutter/features/home/drawer/profile_drawer.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   void displayDrawer(BuildContext context) {
     Scaffold.of(context).openDrawer();
+  }
+
+  void displayEndDrawer(BuildContext context) {
+    Scaffold.of(context).openEndDrawer();
   }
 
   @override
@@ -30,24 +34,31 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           IconButton(
               splashRadius: 25,
-              onPressed: () {},
-              icon: const Icon(Icons.search)),
-          IconButton(
-              splashRadius: 25,
               onPressed: () {
-                // FirebaseAuth.instance
-                ref.read(authRepositoryProvider).logout();
-                Routemaster.of(context).pop();
+                showSearch(
+                    context: context, delegate: SearchCommunityDelegate(ref));
               },
-              icon: CircleAvatar(
-                backgroundImage: NetworkImage(user!.profilePic!),
-              ))
+              icon: const Icon(Icons.search)),
+          Builder(builder: (context) {
+            return IconButton(
+                splashRadius: 25,
+                onPressed: () {
+                  // FirebaseAuth.instance
+                  displayEndDrawer(context);
+                  // ref.read(authRepositoryProvider).logout();
+                  // Routemaster.of(context).pop();
+                },
+                icon: CircleAvatar(
+                  backgroundImage: NetworkImage(user!.profilePic!),
+                ));
+          })
         ],
       ),
       body: Center(
-        child: Text(user.name ?? "xxxxxxx"),
+        child: Text(user!.name ?? "xxxxxxx"),
       ),
       drawer: const CommunityList(),
+      endDrawer: const ProfileDrawer(),
     );
   }
 }

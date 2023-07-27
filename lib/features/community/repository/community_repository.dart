@@ -46,6 +46,32 @@ class CommunityRepository {
     );
   }
 
+  Stream<List<CommunityModel>> searchCommunity(String query) {
+    return _communities
+        .where(
+          'name',
+          isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+          isLessThan: query.isEmpty
+              ? null
+              : query.substring(0, query.length - 1) +
+                  String.fromCharCode(
+                    query.codeUnitAt(query.length - 1) +1,
+                  ),
+        )
+        .snapshots()
+        .map(
+      (event) {
+        List<CommunityModel> communities = [];
+        for (var e in event.docs) {
+          communities.add(
+            CommunityModel.fromMap(e.data() as Map<String, dynamic>),
+          );
+        }
+        return communities;
+      },
+    );
+  }
+
   Stream<CommunityModel> getCommunityByName(String name) {
     return _communities.doc(name).snapshots().map((event) =>
         CommunityModel.fromMap(event.data() as Map<String, dynamic>));
