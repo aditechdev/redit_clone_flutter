@@ -74,22 +74,3 @@ final userProfileControllerProvider =
     storageRepository: ref.watch(storageRepositoryProvider), userProfileRepository: ref.watch(userProfileRepositoryProvider),
   );
 });
-
-// final userCommunityProvider = StreamProvider((ref) {
-//   var communityController = ref.watch(communityControlerProvider.notifier);
-
-//   return communityController.getUserCommunity();
-// });
-
-// final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
-//   var communityController = ref.watch(communityControlerProvider.notifier);
-
-//   return communityController.getCommunityByName(name);
-// });
-
-// final searchCommunityProvider = StreamProvider.family((ref, String name) {
-//   var communityController = ref.watch(communityControlerProvider.notifier);
-
-//   return communityController.searchCommunity(name);
-// });
-
