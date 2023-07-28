@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:redit_clone_flutter/core/utils.dart';
 import 'package:redit_clone_flutter/features/community/controller/community_controller.dart';
+import 'package:redit_clone_flutter/features/posts/controller/post_controller.dart';
 import 'package:redit_clone_flutter/models/community_model.dart';
 import 'package:redit_clone_flutter/theme/pallete.dart';
 import 'package:redit_clone_flutter/widget/error_text.dart';
@@ -54,6 +55,36 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
     }
   }
 
+  sharePost() {
+    if (widget.type == "image" &&
+        _postFile != null &&
+        _titleController.text.trim().isNotEmpty) {
+      ref.read(postControlerProvider.notifier).shareImagePost(
+          context: context,
+          title: _titleController.text.trim(),
+          selectedCommunity: _selectedCommunity!,
+          file: _postFile);
+    } else if (widget.type == "text" &&
+        _titleController.text.trim().isNotEmpty) {
+      ref.read(postControlerProvider.notifier).shareTextPost(
+          context: context,
+          title: _titleController.text.trim(),
+          selectedCommunity: _selectedCommunity!,
+          description: _descriptionController.text.trim());
+    } else if (widget.type == "link" &&
+        _titleController.text.trim().isNotEmpty &&
+        _linkController.text.trim().isNotEmpty) {
+      ref.read(postControlerProvider.notifier).shareLinkPost(
+            context: context,
+            title: _titleController.text.trim(),
+            selectedCommunity: _selectedCommunity!,
+            link: _linkController.text.trim(),
+          );
+    } else {
+      showSnackBar(context, "Please enter all the fields");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isTypeImage = widget.type == "image";
@@ -65,7 +96,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
         title: Text("Post ${widget.type}"),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: sharePost,
             child: const Text("Share"),
           ),
         ],

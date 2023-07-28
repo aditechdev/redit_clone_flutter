@@ -43,7 +43,7 @@ class CommunityController extends StateNotifier<bool> {
     state = false;
     res.fold(
       (l) => showSnackBar(context, l.message),
-      (r) => () {
+      (r) {
         Routemaster.of(context).pop();
 
         showSnackBar(context, "${community.name} created successfully");
