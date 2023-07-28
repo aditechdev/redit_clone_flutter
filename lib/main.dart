@@ -12,6 +12,8 @@ import 'package:redit_clone_flutter/widget/error_text.dart';
 import 'package:redit_clone_flutter/widget/loader.dart';
 import 'package:routemaster/routemaster.dart';
 
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
