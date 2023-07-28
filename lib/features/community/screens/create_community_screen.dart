@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:redit_clone_flutter/core/utils.dart';
 import 'package:redit_clone_flutter/features/community/controller/community_controller.dart';
+import 'package:redit_clone_flutter/theme/pallete.dart';
 import 'package:redit_clone_flutter/widget/loader.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -43,6 +44,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(communityControlerProvider);
+    var currentTheme = ref.watch(themeModeProvider);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -52,7 +54,10 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
             Icons.chevron_left_outlined,
           ),
         ),
-        title: const Text("Create Community"),
+        title: Text(
+          "Create Community",
+          style: TextStyle(color: currentTheme.textTheme.bodyLarge!.color!),
+        ),
       ),
       body: isLoading
           ? const LoaderWidget()

@@ -115,7 +115,7 @@ class CommunityRepository {
   FutureVoid addMods(String communityName, List<String> uids) async {
     try {
       return right(
-       await _communities.doc(communityName).update(
+        await _communities.doc(communityName).update(
           {"mods": uids},
         ),
       );

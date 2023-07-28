@@ -67,12 +67,18 @@ class _EditUserProfileState extends ConsumerState<EditUserProfile> {
   @override
   Widget build(BuildContext context) {
     bool isLoading = ref.watch(userProfileControllerProvider);
+    var currentTheme = ref.watch(themeModeProvider);
     return ref.watch(getUserDataProvider(widget.uid)).when(
         data: (user) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: Pallete.darkModeAppTheme.scaffoldBackgroundColor,
-              title: const Text("Edit community"),
+              backgroundColor: currentTheme.scaffoldBackgroundColor,
+              title: Text(
+                "Edit Profile",
+                style: TextStyle(
+                  color: currentTheme.textTheme.bodyLarge!.color!,
+                ),
+              ),
               centerTitle: false,
               actions: [
                 IconButton(
