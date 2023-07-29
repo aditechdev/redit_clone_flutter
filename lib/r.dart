@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:redit_clone_flutter/features/posts/screen/add_post_screen.dart';
 
 import 'features/feedScreen/screen/feed_screen.dart';
@@ -27,9 +28,26 @@ class AssetsNetwork {
 }
 
 class BottomListScreen {
-  static const screen = [
+  static const screen = [FeedScreen(), AddPostScreen()];
+}
 
-    FeedScreen(),
-    AddPostScreen()
-  ];
+class Other {
+
+  static const IconData up =
+      IconData(0xe800, fontFamily: 'MyFlutterApp', fontPackage: null);
+  static const IconData down =
+      IconData(0xe801, fontFamily: 'MyFlutterApp', fontPackage: null);
+
+  static const awardsPath = 'assets/images/awards';
+
+  static const awards = {
+    'awesomeAns': AssetsAwards.awesomeAnswer,
+    'gold': AssetsAwards.gold,
+    'platinum': AssetsAwards.platinum,
+    'helpful': AssetsAwards.helpful,
+    'plusone': AssetsAwards.plusone,
+    'rocket': AssetsAwards.rocket,
+    'thankyou': AssetsAwards.thankyou,
+    'til': AssetsAwards.til,
+  };
 }

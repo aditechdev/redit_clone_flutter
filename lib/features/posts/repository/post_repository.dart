@@ -25,8 +25,24 @@ class PostRepository {
   }
 
   Stream<List<PostModel>> fetchUserPost(List<CommunityModel> communities) {
-    return  _posts.where('communityName',
-        whereIn: communities.map((e) => e.name).toList()).orderBy('dateTime', descending: true).snapshots().map((event) => event.docs.map((e) => PostModel.fromMap(e.data() as Map<String, dynamic>)).toList());
+    return _posts
+        .where('communityName',
+            whereIn: communities.map((e) => e.name).toList())
+        .orderBy('dateTime', descending: true)
+        .snapshots()
+        .map((event) => event.docs
+            .map((e) => PostModel.fromMap(e.data() as Map<String, dynamic>))
+            .toList());
+  }
+
+  FutureVoid deletePost(PostModel post) async {
+    try {
+      return right(_posts.doc(post.id).delete());
+    } on FirebaseException catch (e) {
+      throw e.message.toString();
+    } catch (e) {
+      return left(Failures(e.toString()));
+    }
   }
 
   CollectionReference get _posts =>
