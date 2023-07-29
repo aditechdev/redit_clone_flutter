@@ -1,0 +1,122 @@
+import 'package:any_link_preview/any_link_preview.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dart';
+import 'package:redit_clone_flutter/models/post_model.dart';
+import 'package:redit_clone_flutter/theme/pallete.dart';
+
+class PostCard extends ConsumerWidget {
+  final PostModel post;
+  const PostCard(this.post, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isTypeImage = post.type == "image";
+    final isTypeText = post.type == "text";
+    final isTypeLink = post.type == "link";
+    final user = ref.watch(userProvider);
+
+    final currentTheme = ref.watch(themeModeProvider);
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: 10,
+          ),
+          decoration: BoxDecoration(
+            color: currentTheme.drawerTheme.backgroundColor,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 16)
+                          .copyWith(right: 0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 16,
+                            backgroundImage:
+                                NetworkImage(post.communityProfilePic),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "r/${post.communityName}",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text("u/${post.userName}")
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                          if (post.uid == user!.uid!)
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SelectableText(
+                      post.title,
+                      style: const TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (isTypeImage)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.35,
+                        width: double.infinity,
+                        child: Image.network(
+                          post.link ?? "",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    if (isTypeText)
+                      Text(
+                        post.description ?? "",
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    if (isTypeLink)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.35,
+                        width: double.infinity,
+                        child: AnyLinkPreview(
+                          link: post.link!,
+                          displayDirection: UIDirection.uiDirectionHorizontal,
+                        ),
+                      ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}

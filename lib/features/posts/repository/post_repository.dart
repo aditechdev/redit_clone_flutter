@@ -5,6 +5,7 @@ import 'package:redit_clone_flutter/core/failures.dart';
 import 'package:redit_clone_flutter/core/firebase_constants.dart';
 import 'package:redit_clone_flutter/core/providers/firebase_providers.dart';
 import 'package:redit_clone_flutter/core/type_def.dart';
+import 'package:redit_clone_flutter/models/community_model.dart';
 import 'package:redit_clone_flutter/models/post_model.dart';
 
 class PostRepository {
@@ -13,7 +14,7 @@ class PostRepository {
   PostRepository({required FirebaseFirestore firebaseFirestore})
       : _firebaseFirestore = firebaseFirestore;
 
-    FutureVoid createPost(PostModel post, String userId) async {
+  FutureVoid createPost(PostModel post, String userId) async {
     try {
       return right(_posts.doc(post.id).set(post.toMap()));
     } on FirebaseException catch (e) {
@@ -23,6 +24,10 @@ class PostRepository {
     }
   }
 
+  Stream<List<PostModel>> fetchUserPost(List<CommunityModel> communities) {
+    return  _posts.where('communityName',
+        whereIn: communities.map((e) => e.name).toList()).orderBy('dateTime', descending: true).snapshots().map((event) => event.docs.map((e) => PostModel.fromMap(e.data() as Map<String, dynamic>)).toList());
+  }
 
   CollectionReference get _posts =>
       _firebaseFirestore.collection(FirebaseConstants.postsCollection);

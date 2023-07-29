@@ -129,7 +129,7 @@ class PostController extends StateNotifier<bool> {
             commentCount: 0,
             userName: user?.name ?? "",
             uid: user?.uid ?? "",
-            type: 'text',
+            type: 'image',
             dateTime: DateTime.now(),
             awards: [],
             link: r);
@@ -147,6 +147,14 @@ class PostController extends StateNotifier<bool> {
       },
     );
   }
+
+  Stream<List<PostModel>> fetchUserPost(List<CommunityModel> communities) {
+    if (communities.isNotEmpty) {
+      return _postRepository.fetchUserPost(communities);
+    } else {
+      return Stream.value([]);
+    }
+  }
 }
 
 final postControlerProvider =
@@ -156,4 +164,10 @@ final postControlerProvider =
     ref: ref,
     storageRepository: ref.watch(storageRepositoryProvider),
   );
+});
+
+final userPostProvider =
+    StreamProvider.family((ref, List<CommunityModel> communities) {
+  final postController = ref.watch(postControlerProvider.notifier);
+  return postController.fetchUserPost(communities);
 });

@@ -182,6 +182,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
           ref.watch(userCommunityProvider).when(
                 data: (communities) {
                   _communites = communities;
+                  _selectedCommunity ??= communities[0];
 
                   if (communities.isEmpty) {
                     return const SizedBox();

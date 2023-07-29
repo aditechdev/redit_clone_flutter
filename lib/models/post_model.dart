@@ -87,21 +87,21 @@ class PostModel {
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
     return PostModel(
-      id: map['id'] as String,
-      title: map['title'] as String,
-      link: map['link'] != null ? map['link'] as String : null,
-      description:
-          map['description'] != null ? map['description'] as String : null,
-      communityName: map['communityName'] as String,
-      communityProfilePic: map['communityProfilePic'] as String,
-      upvotes: List<String>.from((map['upvotes'] as List<String>)),
-      downVotes: List<String>.from((map['downVotes'] as List<String>)),
+      id: map['id'],
+      title: map['title'],
+      link: map['link'],
+      description: map['description'],
+      communityName: map['communityName'],
+      communityProfilePic: map['communityProfilePic'],
+      upvotes: map['upvotes'] != null ? List<String>.from(map['upvotes']) : [],
+      downVotes:
+          map['downvotes'] != null ? List<String>.from(map['downvotes']) : [],
       commentCount: map['commentCount'] as int,
       userName: map['userName'] as String,
       uid: map['uid'] as String,
       type: map['type'] as String,
       dateTime: DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int),
-      awards: List<String>.from((map['awards'] as List<String>)),
+      awards: List<String>.from((map['awards'])),
     );
   }
 
