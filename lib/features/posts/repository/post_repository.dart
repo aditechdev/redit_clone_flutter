@@ -45,6 +45,8 @@ class PostRepository {
     }
   }
 
+  void upvote(PostModel post, String userId) {}
+
   CollectionReference get _posts =>
       _firebaseFirestore.collection(FirebaseConstants.postsCollection);
 }
