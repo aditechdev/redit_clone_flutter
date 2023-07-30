@@ -75,7 +75,7 @@ class PostModel {
       'communityName': communityName,
       'communityProfilePic': communityProfilePic,
       'upvotes': upvotes,
-      'downVotes': downVotes,
+      'downvotes': downVotes,
       'commentCount': commentCount,
       'userName': userName,
       'uid': uid,

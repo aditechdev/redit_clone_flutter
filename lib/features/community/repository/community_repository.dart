@@ -5,6 +5,7 @@ import 'package:redit_clone_flutter/core/failures.dart';
 import 'package:redit_clone_flutter/core/firebase_constants.dart';
 import 'package:redit_clone_flutter/core/providers/firebase_providers.dart';
 import 'package:redit_clone_flutter/core/type_def.dart';
+import 'package:redit_clone_flutter/models/post_model.dart';
 
 import '../../../models/community_model.dart';
 
@@ -126,8 +127,25 @@ class CommunityRepository {
     }
   }
 
+  Stream<List<PostModel>> getCommunityPost(String communityName) {
+    return _post
+        .where("communityName", isEqualTo: communityName)
+        .orderBy("dateTime", descending: true)
+        .snapshots()
+        .map(
+          (event) => event.docs
+              .map(
+                (e) => PostModel.fromMap(e.data() as Map<String, dynamic>),
+              )
+              .toList(),
+        );
+  }
+
   CollectionReference get _communities =>
       _firestore.collection(FirebaseConstants.communitiesCollection);
+
+  CollectionReference get _post =>
+      _firestore.collection(FirebaseConstants.postsCollection);
 }
 
 final communitiesRepositoryProvider = Provider<CommunityRepository>(

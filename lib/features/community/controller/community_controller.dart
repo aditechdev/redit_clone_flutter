@@ -8,6 +8,7 @@ import 'package:redit_clone_flutter/core/providers/storage_repository_providers.
 import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dart';
 import 'package:redit_clone_flutter/features/community/repository/community_repository.dart';
 import 'package:redit_clone_flutter/models/community_model.dart';
+import 'package:redit_clone_flutter/models/post_model.dart';
 import 'package:redit_clone_flutter/r.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -139,6 +140,10 @@ class CommunityController extends StateNotifier<bool> {
       (r) => Routemaster.of(context).pop(),
     );
   }
+
+  Stream<List<PostModel>> getCommunityPost(String communityName) {
+    return _communityRepository.getCommunityPost(communityName);
+  }
 }
 
 final communityControlerProvider =
@@ -166,4 +171,11 @@ final searchCommunityProvider = StreamProvider.family((ref, String name) {
   var communityController = ref.watch(communityControlerProvider.notifier);
 
   return communityController.searchCommunity(name);
+});
+
+final getCommunityPostProvider =
+    StreamProvider.family((ref, String communityName) {
+  return ref
+      .read(communityControlerProvider.notifier)
+      .getCommunityPost(communityName);
 });

@@ -45,7 +45,40 @@ class PostRepository {
     }
   }
 
-  void upvote(PostModel post, String userId) {}
+  void upvote(PostModel post, String userId) {
+    if (post.downVotes.contains(userId)) {
+      _posts.doc(post.id).update({
+        'downvotes': FieldValue.arrayRemove([userId])
+      });
+    }
+    if (post.upvotes.contains(userId)) {
+      _posts.doc(post.id).update({
+        'upvotes': FieldValue.arrayRemove([userId])
+      });
+    } else {
+_posts.doc(post.id).update({
+        'upvotes': FieldValue.arrayUnion([userId])
+      });
+      
+    }
+  }
+
+    void downvote(PostModel post, String userId) {
+    if (post.upvotes.contains(userId)) {
+      _posts.doc(post.id).update({
+        'upvotes': FieldValue.arrayRemove([userId])
+      });
+    }
+    if (post.downVotes.contains(userId)) {
+      _posts.doc(post.id).update({
+        'downvotes': FieldValue.arrayRemove([userId])
+      });
+    } else {
+      _posts.doc(post.id).update({
+        'downvotes': FieldValue.arrayUnion([userId])
+      });
+    }
+  }
 
   CollectionReference get _posts =>
       _firebaseFirestore.collection(FirebaseConstants.postsCollection);

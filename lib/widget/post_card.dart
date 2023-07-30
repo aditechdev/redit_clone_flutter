@@ -2,9 +2,13 @@ import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dart';
+import 'package:redit_clone_flutter/features/community/controller/community_controller.dart';
 import 'package:redit_clone_flutter/features/posts/controller/post_controller.dart';
 import 'package:redit_clone_flutter/models/post_model.dart';
 import 'package:redit_clone_flutter/theme/pallete.dart';
+import 'package:redit_clone_flutter/widget/error_text.dart';
+import 'package:redit_clone_flutter/widget/loader.dart';
+import 'package:routemaster/routemaster.dart';
 
 class PostCard extends ConsumerWidget {
   final PostModel post;
@@ -12,6 +16,23 @@ class PostCard extends ConsumerWidget {
 
   void deletePost(WidgetRef ref, PostModel post, BuildContext context) {
     ref.read(postControlerProvider.notifier).deletePost(post, context);
+  }
+
+  void upVotePost(WidgetRef ref, PostModel post) {
+    ref.read(postControlerProvider.notifier).upvote(post);
+  }
+
+  void downvote(WidgetRef ref, PostModel post) {
+    ref.read(postControlerProvider.notifier).downvote(post);
+  }
+
+  void navigateToCommunity(String communityName, BuildContext context) {
+    Routemaster.of(context).push("/r/$communityName");
+  }
+
+  void navigateToUserProfile(String uid, BuildContext context) {
+    Routemaster.of(context).push("/u/$uid");
+
   }
 
   @override
@@ -44,24 +65,35 @@ class PostCard extends ConsumerWidget {
                           .copyWith(right: 0),
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 16,
-                            backgroundImage:
-                                NetworkImage(post.communityProfilePic),
+                          InkWell(
+                            onTap:()=> navigateToCommunity(post.communityName, context),
+                            child: CircleAvatar(
+                              
+                              radius: 16,
+                              backgroundImage:
+                                  NetworkImage(post.communityProfilePic),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "r/${post.communityName}",
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                GestureDetector(
+                                  onTap: () => navigateToCommunity(
+                                      post.communityName, context),
+                                  child: Text(
+                                    "r/${post.communityName}",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                                Text("u/${post.userName}")
+                                GestureDetector(
+                                  onTap: () => navigateToUserProfile(
+                                        post.uid, context),
+                                  child: Text("u/${post.userName}"))
                               ],
                             ),
                           ),
@@ -121,7 +153,7 @@ class PostCard extends ConsumerWidget {
                     Row(
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () => upVotePost(ref, post),
                           icon: Icon(
                             Icons.arrow_circle_up,
                             // Other.up,
@@ -138,7 +170,7 @@ class PostCard extends ConsumerWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () => downvote(ref, post),
                           icon: Icon(
                             Icons.arrow_circle_down,
                             size: 30,
@@ -147,34 +179,63 @@ class PostCard extends ConsumerWidget {
                                 : null,
                           ),
                         ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.comment),
+                            ),
+                            Text(
+                              post.commentCount == 0
+                                  ? 'Comment'
+                                  : "${post.commentCount}",
+                              style: const TextStyle(
+                                fontSize: 17,
+                              ),
+                            ),
+                            // IconButton(
+                            //   onPressed: () {},
+                            //   icon: Icon(
+                            //     Other.down,
+                            //     size: 30,
+                            //     color: post.downVotes.contains(user.uid)
+                            //         ? Colors.blue
+                            //         : null,
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                        const Spacer(),
+                        ref
+                            .watch(
+                                getCommunityByNameProvider(post.communityName))
+                            .when(
+                              data: (data) {
+                                bool isModerator = data.mods.contains(post.uid);
+
+                                return isModerator
+                                    ? IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.admin_panel_settings,
+                                          size: 30,
+                                          color:
+                                              post.downVotes.contains(user.uid)
+                                                  ? Colors.blue
+                                                  : null,
+                                        ),
+                                      )
+                                    : const SizedBox();
+                              },
+                              error: (e, s) {
+                                return ErrorTextWidget(
+                                  error: e.toString(),
+                                );
+                              },
+                              loading: () => const LoaderWidget(),
+                            )
                       ],
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.comment),
-                        ),
-                        Text(
-                          post.commentCount == 0
-                              ? 'Comment'
-                              : "${post.commentCount}",
-                          style: const TextStyle(
-                            fontSize: 17,
-                          ),
-                        ),
-                        // IconButton(
-                        //   onPressed: () {},
-                        //   icon: Icon(
-                        //     Other.down,
-                        //     size: 30,
-                        //     color: post.downVotes.contains(user.uid)
-                        //         ? Colors.blue
-                        //         : null,
-                        //   ),
-                        // ),
-                      ],
-                    )
                   ],
                 ),
               )
