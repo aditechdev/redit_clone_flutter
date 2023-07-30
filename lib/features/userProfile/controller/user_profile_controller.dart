@@ -6,6 +6,7 @@ import 'package:redit_clone_flutter/core/providers/storage_repository_providers.
 import 'package:redit_clone_flutter/core/utils.dart';
 import 'package:redit_clone_flutter/features/auth/controller/auth_controller.dart';
 import 'package:redit_clone_flutter/features/userProfile/repository/user_profile_repository.dart';
+import 'package:redit_clone_flutter/models/post_model.dart';
 import 'package:redit_clone_flutter/models/user_model.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -64,13 +65,21 @@ class UserProfileController extends StateNotifier<bool> {
       },
     );
   }
-}
 
+  Stream<List<PostModel>> getUserPost(String uid) {
+    return _profileRepository.getUserPost(uid);
+  }
+}
 
 final userProfileControllerProvider =
     StateNotifierProvider<UserProfileController, bool>((ref) {
   return UserProfileController(
     ref: ref,
-    storageRepository: ref.watch(storageRepositoryProvider), userProfileRepository: ref.watch(userProfileRepositoryProvider),
+    storageRepository: ref.watch(storageRepositoryProvider),
+    userProfileRepository: ref.watch(userProfileRepositoryProvider),
   );
+});
+
+final getUserPostProvider = StreamProvider.family((ref, String uid) {
+  return ref.read(userProfileControllerProvider.notifier).getUserPost(uid);
 });
